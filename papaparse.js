@@ -1368,8 +1368,10 @@ License: MIT
 
 			var nAppearsFirst = (n.length > 1 && n[0].length < r[0].length);
 
-			if (r.length === 1 || nAppearsFirst)
+			if (r.length === 1 || nAppearsFirst) {
+				console.info('Decided that \n is the correct line delimiter');
 				return '\n';
+			}
 
 			var numWithN = 0;
 			for (var i = 0; i < r.length; i++)
@@ -1378,7 +1380,9 @@ License: MIT
 					numWithN++;
 			}
 
-			return numWithN >= r.length / 2 ? '\r\n' : '\r';
+			var delim = numWithN >= r.length / 2 ? '\r\n' : '\r';
+			console.info(`Decided that ${delim} is the correct line delimiter`);
+			return delim;
 		}
 
 		function addError(type, code, msg, row)
@@ -1459,6 +1463,7 @@ License: MIT
 				delimLen = delim.length,
 				newlineLen = newline.length,
 				commentsLen = comments.length;
+			console.info(`inputLen: ${inputLen}, delimLen: ${delimLen}, newlineLen: ${newlineLen}, commentsLen: ${commentsLen}`);
 			var stepIsFunction = isFunction(step);
 
 			// Establish starting state
@@ -1519,6 +1524,7 @@ License: MIT
 					inputExpansion = editedInput[0].length - firstLine.length;
 					input = editedInput.join(newline);
 					inputLen = input.length;
+					console.info(`inputLen updated to: ${inputLen}`);
 				}
 			}
 			if (fastMode || (fastMode !== false && input.indexOf(quoteChar) === -1))
