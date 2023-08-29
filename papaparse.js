@@ -1357,19 +1357,25 @@ License: MIT
 
 		function guessLineEndings(input, quoteChar)
 		{
+			console.info(`input length at start: ${input.length}`);
 			input = input.substring(0, 1024 * 1024);	// max length 1 MB
+			console.info(`input length after substring: ${input.length}`);
 			// Replace all the text inside quotes
 			var re = new RegExp(escapeRegExp(quoteChar) + '([^]*?)' + escapeRegExp(quoteChar), 'gm');
 			input = input.replace(re, '');
+			console.info(`input length after replace: ${input.length}`);
 
 			var r = input.split('\r');
+			console.info(`r length: ${r.length}`);
 
 			var n = input.split('\n');
+			console.info(`n length: ${n.length}`);
 
 			var nAppearsFirst = (n.length > 1 && n[0].length < r[0].length);
+			console.info(`n[0].length ${n[0].length}, r[0].length ${r[0].length}, nAppearsFirst: ${nAppearsFirst}`);
 
 			if (r.length === 1 || nAppearsFirst) {
-				console.info('Decided that \n is the correct line delimiter');
+				console.info('Decided that newline is the correct line delimiter');
 				return '\n';
 			}
 
@@ -1379,9 +1385,10 @@ License: MIT
 				if (r[i][0] === '\n')
 					numWithN++;
 			}
+			console.info(`numWithN: ${numWithN}`);
 
 			var delim = numWithN >= r.length / 2 ? '\r\n' : '\r';
-			console.info(`Decided that ${delim} is the correct line delimiter`);
+			console.info(`Decided that ${delim === '\r\n' ? 'crlf' : 'cr'} is the correct line delimiter`);
 			return delim;
 		}
 
